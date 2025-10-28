@@ -57,7 +57,7 @@ export default function EntryTable({ entries, onDelete }: EntryTableProps) {
     );
 
   return (
-    <div>
+    <div className="w-full">
       <EntryFilter
         search={search}
         setSearch={setSearch}
@@ -65,8 +65,9 @@ export default function EntryTable({ entries, onDelete }: EntryTableProps) {
         setTypeFilter={setTypeFilter}
       />
 
-      <div className="rounded-sm border border-[#2c2c2c] bg-[#14181c]">
-        <table className="w-full border-collapse text-left">
+      {/* Responsive wrapper with scroll on small screens */}
+      <div className="w-full overflow-x-auto rounded-md border border-[#2c2c2c] bg-[#14181c]">
+        <table className="min-w-[700px] w-full border-collapse text-left">
           <thead>
             <tr className="bg-[#1b1f23] border-b border-[#2c2c2c] text-xs uppercase tracking-wide text-gray-400">
               <th className="p-3 font-semibold">Poster</th>
@@ -102,19 +103,26 @@ export default function EntryTable({ entries, onDelete }: EntryTableProps) {
                     <img
                       src={entry.picture || fallbackImage}
                       alt={entry.title}
-                      className="w-12 h-16 object-cover rounded-sm border border-[#2c2c2c]"
+                      className="w-12 h-16 sm:w-14 sm:h-20 object-cover rounded-sm border border-[#2c2c2c]"
                     />
                   </td>
 
-                  <td className="p-3 text-white font-medium">{entry.title}</td>
+                  <td className="p-3 text-white font-medium wrap-break-words max-w-[150px] sm:max-w-none">
+                    {entry.title}
+                  </td>
+
                   <td className="p-3 text-gray-300 capitalize">
                     {entry.type ? entry.type.replace("_", " ") : "-"}
                   </td>
+
                   <td className="p-3 text-gray-300">{entry.director || "-"}</td>
-                  <td className="p-3 text-gray-200">
+
+                  <td className="p-3 text-gray-200 whitespace-nowrap">
                     {entry.budget ? `$${entry.budget.toLocaleString()}` : "-"}
                   </td>
+
                   <td className="p-3 text-gray-300">{entry.duration || "-"}</td>
+
                   <td className="p-3 text-gray-300">
                     {formatYearOrTime(entry.yearOrTime)}
                   </td>
@@ -141,6 +149,11 @@ export default function EntryTable({ entries, onDelete }: EntryTableProps) {
           </tbody>
         </table>
       </div>
+
+      {/* Hint for mobile users */}
+      <p className="text-gray-500 text-xs text-center mt-2 sm:hidden italic">
+        Swipe left/right to see more columns →
+      </p>
     </div>
   );
 }

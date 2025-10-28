@@ -82,52 +82,62 @@ export default function EntryList() {
     }
   };
 
+  const openModal = (id: number) => {
+    setEntryToDelete(id);
+    setShowModal(true);
+  };
+
+  const closeModal = () => {
+    setShowModal(false);
+    setEntryToDelete(null);
+  };
+
   return (
     <div className="relative bg-[#1C252C] border border-gray-700 rounded-md shadow-md p-6">
-      <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 border-b border-gray-600 pb-4 mb-6">
+      {/* Header Section */}
+      <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-6 gap-3 md:gap-0 border-b border-gray-600 pb-4">
         <div>
           <h2 className="text-2xl font-semibold text-white tracking-tight">
             Your List
           </h2>
           <p className="text-gray-400 text-sm mt-1">
-            Manage and review your saved records.
+            Manage and review your saved records with ease.
           </p>
         </div>
 
         <button
           onClick={() => navigate("/entry/new")}
-          className="w-full md:w-auto px-4 py-2 cursor-pointer bg-green-500 text-black font-semibold rounded-md hover:bg-green-600 transition active:scale-95"
+          className="w-full sm:w-auto px-4 py-2 cursor-pointer bg-green-500 text-black font-semibold rounded-md hover:bg-green-600 transition-colors duration-200 shadow-sm active:scale-95"
         >
           + Add Entry
         </button>
       </div>
 
-      <div className="overflow-x-auto rounded-md">
+      {/* Entry Table Section */}
+      <div>
         {entries.length === 0 && !loading ? (
           <p className="text-gray-400 text-sm text-center py-6">
             No entries yet — start by adding one!
           </p>
         ) : (
-          <EntryTable entries={entries} onDelete={setEntryToDelete} />
+          <EntryTable entries={entries} onDelete={openModal} />
+        )}
+
+        {hasMore && (
+          <div
+            ref={observerRef}
+            className="text-center py-4 text-gray-500 text-sm italic tracking-wide"
+          >
+            {loading ? "Loading more..." : "Scroll for more"}
+          </div>
         )}
       </div>
 
-      {hasMore && (
-        <div
-          ref={observerRef}
-          className="text-center py-4 text-gray-500 text-sm italic tracking-wide"
-        >
-          {loading ? "Loading more..." : "Scroll for more"}
-        </div>
-      )}
-
+      {/* Delete Confirmation Modal */}
       <ConfirmationModal
         isOpen={showModal}
         onConfirm={handleDelete}
-        onCancel={() => {
-          setShowModal(false);
-          setEntryToDelete(null);
-        }}
+        onCancel={closeModal}
         message="Are you sure you want to delete this entry?"
       />
     </div>
