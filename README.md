@@ -11,7 +11,6 @@ A full-stack web application for managing your favorite movies and TV shows. Bui
 - 🔍 View detailed info like title, director, budget, duration, year/time, etc.
 - ⚙️ Backend with full CRUD APIs and validation.
 - 🔐 User authentication (login/logout).
-- 💎 Responsive, modern, and dark-themed UI inspired by Letterboxd.
 
 ---
 
